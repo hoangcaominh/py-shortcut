@@ -1,7 +1,7 @@
 import os, json
 
 usage = '''Usage:
-python pycut.py [Option]
+python "path_to_this_folder/main.py" [Option]
 
 Option:
 -n --new <name> <path>: Create a new shortcut
@@ -61,6 +61,8 @@ def opt_info(name):
     print('Path: ' + data[name])
 
 def opt_list():
+    print('Name\t\tPath')
+    print('-' * 80)
     for key in data:
         print(key + ('\t\t' if len(key) < 8 else '\t') + data[key])
 
