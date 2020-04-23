@@ -23,7 +23,7 @@ if args:
         if len(args) < 2:
             util.error(1)
         else:
-            name = args[1].replace('\\', '/').split('/')
+            name = util.split_dir(args[1])
             if not util.exist(name[0]):
                 util.error(7, name[0])
             else:
@@ -57,7 +57,7 @@ if args:
         else:
             util.opt_delete(args[1])
     elif flag == '-b' or flag == '--base':
-            print(os.path.dirname(__file__))
+        print(os.path.dirname(__file__))
     else:
         util.error(6, args[0])
     util.save(util.data)

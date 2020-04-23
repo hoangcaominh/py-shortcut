@@ -27,6 +27,17 @@ def data_exist():
             file.write('{}')
             print('Initialized new data.')
 
+def split_dir(name):
+    return name.replace('\\', '/').split('/')
+
+def join_path(name):
+    path = data[name[0]]
+    it = iter(name)
+    _ = next(it)
+    for subdir in it:
+        path = os.path.join(path, subdir)
+    return path
+
 def load():
     global data
     data_exist()
@@ -40,9 +51,9 @@ def save(data):
 
 def error(id, msg=''):
     error_list = {
-        1: 'Argument <name> is not specified.',
-        2: 'Argument <path> is not specified.',
-        3: 'Argument <change> is not specified.',
+        1: 'Parameter <name> is not specified.',
+        2: 'Parameter <path> is not specified.',
+        3: 'Parameter <change> is not specified.',
         4: 'Modification option is not specified.',
         5: f'Unrecognized modification option: {msg}.',
         6: f'Unrecognized flag: {msg}.',
@@ -50,7 +61,7 @@ def error(id, msg=''):
         8: f'"{msg}" already exists.',
         9: 'Name cannot exceed 15 characters.',
         10: f'"{msg}" is not a directory.',
-        11: f'The system cannot find the file specified: "{msg}".'
+        11: f'The system cannot find the file specified: "{msg}".',
     }
 
     print(error_list.get(id, 'Unknown error.'))
@@ -60,20 +71,16 @@ def error(id, msg=''):
 def opt_new(name, path):
     if len(name) < 16:
         data[name] = path
-        # print('Added element ' + name + '.')
+        # print('Added element {name}.')
     else:
         error(9)
 
 def opt_open(name):
-    # print('Opening element ' + name + '...')
+    # print(f'Opening element {name}...')
     path = data[name[0]]
     if len(name) > 1:
         if os.path.isdir(path):
-            it = iter(name)
-            _ = next(it)
-            for subdir in it:
-                path = os.path.join(path, subdir)
-
+            path = join_path(name)
             if os.path.exists(path):
                 os.startfile(path)
             else:
@@ -108,4 +115,4 @@ def opt_modify(option, name, change):
 
 def opt_delete(name):
     del data[name]
-    # print('Deleted element ' + name + '.')
+    # print('Deleted element {name}.')
