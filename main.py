@@ -22,11 +22,13 @@ if args:
     elif flag == '-o' or flag == '--open':
         if len(args) < 2:
             util.error(1)
-        elif not util.exist(args[1]):
-            util.error(7, args[1])
         else:
-            thread = threading.Thread(target=util.opt_open, args=(args[1],))
-            thread.start()
+            name = args[1].replace('\\', '/').split('/')
+            if not util.exist(name[0]):
+                util.error(7, name[0])
+            else:
+                thread = threading.Thread(target=util.opt_open, args=(name,))
+                thread.start()
     elif flag == '-i' or flag == '--info':
         if len(args) < 2:
             util.error(1)

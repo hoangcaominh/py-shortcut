@@ -44,11 +44,13 @@ def error(id, msg=''):
         2: 'Argument <path> is not specified.',
         3: 'Argument <change> is not specified.',
         4: 'Modification option is not specified.',
-        5: 'Unrecognized modification option: ' + msg + '.',
-        6: 'Unrecognized flag: ' + msg + '.',
-        7: '"' + msg + '" is not found in database.',
-        8: '"' + msg + '" already exists.',
-        9: 'Name cannot exceed 15 characters.'
+        5: f'Unrecognized modification option: {msg}.',
+        6: f'Unrecognized flag: {msg}.',
+        7: f'"{msg}" is not found in database.',
+        8: f'"{msg}" already exists.',
+        9: 'Name cannot exceed 15 characters.',
+        10: f'"{msg}" is not a directory.',
+        11: f'The system cannot find the file specified: "{msg}".'
     }
 
     print(error_list.get(id, 'Unknown error.'))
@@ -64,11 +66,26 @@ def opt_new(name, path):
 
 def opt_open(name):
     # print('Opening element ' + name + '...')
-    os.startfile(data[name])
+    path = data[name[0]]
+    if len(name) > 1:
+        if os.path.isdir(path):
+            it = iter(name)
+            _ = next(it)
+            for subdir in it:
+                path = os.path.join(path, subdir)
+
+            if os.path.exists(path):
+                os.startfile(path)
+            else:
+                error(11, path)
+        else:
+            error(10, name[0])
+    else:
+        os.startfile(path)
 
 def opt_info(name):
-    print('Name: ' + name)
-    print('Path: ' + data[name])
+    print(f'Name: {name}')
+    print(f'Path: {data[name]}')
 
 def opt_list():
     print('Name\t\tPath')
