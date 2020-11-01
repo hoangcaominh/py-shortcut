@@ -3,3 +3,8 @@ __pycache__/
 
 data.json
 tojson.py
+
+# pyinstaller specific
+[Bb]uild/
+[Dd]ist/
+*.spec
