@@ -6,7 +6,7 @@ python "path_to_this_folder/main.py" [Option]
 
 Option:
 -n --new <name> <path>: Create a new shortcut
--o --open <name>: Open a shortcut
+-o --open <name> [args...]: Open a shortcut with optional arguments
 -i --info <name>: View the information of a shortcut
 -l --list: View the list of shortcuts
 -m --modify [-n --name][-p --path] <name> <change>: Modify the name and/or the path of a shortcut
@@ -67,6 +67,12 @@ def error(id, msg=''):
     if id in [1, 2, 3, 4, 5]:
         print(usage)
 
+def open_shortcut(path, args):
+    if (args == []):
+        os.startfile(path)
+    else:
+        os.system(f'"{path}" ' + ' '.join(args))
+
 def opt_new(name, path):
     if len(name) < 16:
         data[name] = path
@@ -74,17 +80,17 @@ def opt_new(name, path):
     else:
         error(9)
 
-def opt_open(name):
-    # print(f'Opening element {name}...')
+def opt_open(name, args):
+    # print(f'Opening element {name} with {args}...')
     path = data[name[0]]
     if len(name) > 1:
         path = join_path(name)
         if os.path.exists(path):
-            os.startfile(path)
+            open_shortcut(path, args)
         else:
             error(10, path)
     else:
-        os.startfile(path)
+        open_shortcut(path, args)
 
 def opt_info(name):
     print(f'Name: {name}')

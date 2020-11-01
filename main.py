@@ -27,7 +27,7 @@ if args:
             if not util.exist(name[0]):
                 util.error(7, name[0])
             else:
-                thread = threading.Thread(target=util.opt_open, args=(name,))
+                thread = threading.Thread(target=util.opt_open, args=(name, args[2:]))
                 thread.start()
     elif flag == '-i' or flag == '--info':
         if len(args) < 2:
